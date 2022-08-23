@@ -15,3 +15,8 @@ We have chosen the simplest way to collect logs (by sharing volumes between cont
 **Prerequisites:** [Docker](https://docs.docker.com/engine/install/) / [Docker Compose](https://docs.docker.com/compose/install/)
 
 ps: default's credentials for metabase are `crowdsec@crowdsec.net` and `!!Cr0wdS3c_M3t4b4s3??`
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
