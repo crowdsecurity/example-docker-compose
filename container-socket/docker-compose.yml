@@ -38,15 +38,16 @@ services:
       - crowdsec-config:/etc/crowdsec/
 
 # #Uncomment to use socket proxy
-#   socket-proxy:
-#     environment:
-#       CONTAINERS: 1
-#     volumes:
-# #      - '/var/run/podman.sock:/var/run/docker.sock:ro'
-#       - '/var/run/docker.sock:/var/run/docker.sock'
-#     restart: always
-#     container_name: socket-proxy
-#     image: tecnativa/docker-socket-proxy
+  # socket-proxy:
+  #   restart: always
+  #   image: tecnativa/docker-socket-proxy
+  #   container_name: socket-proxy
+  #   environment:
+  #     INFO: 1
+  #     CONTAINERS: 1
+  #   volumes:
+  #     - '/var/run/docker.sock:/var/run/docker.sock'
+# #    - '/var/run/podman.sock:/var/run/docker.sock:ro'
 # #
 
 volumes:
