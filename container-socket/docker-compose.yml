@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  app:
+    image: traefik/whoami
+    restart: always
+    networks:
+      crowdsec:
+    
+  reverse-proxy:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 8000:80
+    depends_on:
+      - 'app'
+    volumes:
+      - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      crowdsec:
+  
+  crowdsec:
+    image: crowdsecurity/crowdsec
+    restart: always
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      ## DOCKER_HOST: tcp://socket-proxy:2375
+      COLLECTIONS: "crowdsecurity/nginx"
+    depends_on:
+      - 'reverse-proxy'
+    volumes:
+      ## Bad pratice to mount docker socket into a container
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      ######################################################
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+
+# #Uncomment to use socket proxy
+#   socket-proxy:
+#     environment:
+#       CONTAINERS: 1
+#     volumes:
+# #      - '/var/run/podman.sock:/var/run/docker.sock:ro'
+#       - '/var/run/docker.sock:/var/run/docker.sock'
+#     restart: always
+#     container_name: socket-proxy
+#     image: tecnativa/docker-socket-proxy
+# #
+
+volumes:
+  crowdsec-db:
+  crowdsec-config:
+
+networks:
+  crowdsec:
+    driver: bridge
