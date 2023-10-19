@@ -28,7 +28,7 @@ docker compose restart nginx
     error_log /var/log/nginx/example.error.log;
 ```
 
-In this docker compose example we use the [latter option](reverse-proxy/nginx.conf#L13-L14) and update our [acquisition config](crowdsec/acquis.yaml#2) to read from the new path.
+In this docker compose example we use the [latter option](reverse-proxy/nginx.conf#L13-L14) and update our [acquisition config](crowdsec/acquis.yaml#L2) to read from the new path.
 
 ## Description
 
