@@ -4,6 +4,12 @@ This example still works, however, there is one pitfall that is not properly exp
 
 When using the default nginx image the logs are written to the default log path `/var/log/nginx/access.log`, however, the nginx image symlinks these files to `/dev/stdout` so when you do `docker logs nginx` it shows them.
 
+### Why is this a pitfall?
+
+In this example CrowdSec is configured to read logs from files, however, it cannot read logs written to the container stdout using the file module. Please see [container-socket](../container-socket/) for an example on how to read logs from the container stdout.
+
+### Potential fixes
+
 So there are couple of fixes to this issue, either:
 - Use a custom nginx image that deletes the symlinked files
 ```
@@ -23,10 +29,6 @@ docker compose restart nginx
 ```
 
 In this docker compose example we use the [latter option](reverse-proxy/nginx.conf#L13-L14)
-
-### Why is this a pitfall?
-
-In this example CrowdSec is configured to read logs from files, however, it cannot read logs written to the container stdout using the file module. Please see [container-socket](../container-socket/) for an example on how to read logs from the container stdout.
 
 ## Description
 
