@@ -4,7 +4,7 @@ This example still works, however, there is one pitfall that is not properly exp
 
 When using the default nginx image the logs are written to the default log path `/var/log/nginx/access.log`, however, the nginx image symlinks these files to `/dev/stdout` so when you do `docker logs nginx` it shows them.
 
-So there are two fixes to this issue, either:
+So there are couple of fixes to this issue, either:
 - Use a custom nginx image that deletes the symlinked files
 ```
 FROM nginx:latest
@@ -16,12 +16,19 @@ cd $(docker volume inspect logs | jq '[].Mountpoint')
 rm *.log && cd -
 docker compose restart nginx
 ```
+- Change the default log path in the nginx config to something else, for example `/var/log/nginx/example_access.log`
+```
+    access_log /var/log/nginx/example.access.log;
+    error_log /var/log/nginx/example.error.log;
+```
 
-> Why is this a pitfall?
+In this docker compose example we use the [latter option](reverse-proxy/nginx.conf#L13-L14)
 
-CrowdSec can read logs from files, however, it cannot read logs written to the container stdout using the file module. Please see [container-socket](../container-socket/) for an example on how to read logs from the container stdout.
+### Why is this a pitfall?
 
-### Example
+In this example CrowdSec is configured to read logs from files, however, it cannot read logs written to the container stdout using the file module. Please see [container-socket](../container-socket/) for an example on how to read logs from the container stdout.
+
+## Description
 
 This example explains how to integrate Crowdsec in environment deployed with docker-compose. It set up multiple containers :
 
