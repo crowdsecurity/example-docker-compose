@@ -1,6 +1,5 @@
 In this repository we will be showing multiple examples on how to use CrowdSec within container environments.
 
-ToC
 
 | Example  | Description  |
 | ------------- | ------------- |

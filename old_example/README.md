@@ -1,4 +1,27 @@
-# Docker Compose
+## WARNING
+
+This example still works, however, there is one pitfall that is not properly explained in this example.
+
+When using the default nginx image the logs are written to the default log path `/var/log/nginx/access.log`, however, the nginx image symlinks these files to `/dev/stdout` so when you do `docker logs nginx` it shows them.
+
+So there are two fixes to this issue, either:
+- Use a custom nginx image that deletes the symlinked files
+```
+FROM nginx:latest
+RUN rm /var/log/nginx/*.log
+```
+- In our example the logs are written to `logs` docker volume so you can also just delete the symlinked files in the volume and then restart the container
+```
+cd $(docker volume inspect logs | jq '[].Mountpoint')
+rm *.log && cd -
+docker compose restart nginx
+```
+
+> Why is this a pitfall?
+
+CrowdSec can read logs from files, however, it cannot read logs written to the container stdout using the file module. Please see [container-socket](../container-socket/) for an example on how to read logs from the container stdout.
+
+### Example
 
 This example explains how to integrate Crowdsec in environment deployed with docker-compose. It set up multiple containers :
 
