@@ -47,7 +47,6 @@ services:
   #     CONTAINERS: 1
   #   volumes:
   #     - '/var/run/docker.sock:/var/run/docker.sock'
-# #    - '/var/run/podman.sock:/var/run/docker.sock:ro'
 # #
 
 volumes:
