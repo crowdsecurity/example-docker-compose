@@ -5,7 +5,8 @@ services:
     image: crowdsecurity/crowdsec:latest-debian
     restart: always
     environment:
-      COLLECTIONS: "crowdsecurity/linux,crowdsecurity/iptables"
+    # DISABLE_PARSERS: "crowdsecurity/whitelists"
+      COLLECTIONS: "crowdsecurity/linux crowdsecurity/iptables"
     volumes:
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
       - /var/log/journal:/var/log/host:ro
@@ -20,4 +21,4 @@ volumes:
 
 networks:
   crowdsec:
-    type: bridge
+    driver: bridge
