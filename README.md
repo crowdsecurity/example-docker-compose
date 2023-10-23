@@ -1,5 +1,6 @@
 In this repository we will be showing multiple examples on how to use CrowdSec within container environments.
 
+The idea is to show how to use CrowdSec in different scenarios, from the most basic to more complex ones. These examples can be used out of the box or as a base to build your own solution.
 
 | Name  | Description  |
 | ------------- | ------------- |
