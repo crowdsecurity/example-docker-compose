@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  app:
+    image: 'Lepresidente/nginxproxymanager:latest'
+    restart: unless-stopped
+    ports:
+      # These ports are in format :
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
+    environment:
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      DB_MYSQL_NAME: "npm"
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+    volumes:
+      - ./data:/data
+      - ./crowdsec-openresty-bouncer.conf:/data/crowdsec/crowdsec-openresty-bouncer.conf
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  crowdsec:
+    image: docker.io/crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      - COLLECTIONS=crowdsecurity/nginx-proxy-manager
+    volumes:
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - ./data/logs/:/var/log/npm:ro
+    networks:
+      crowdsec:
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+
+volumes:
+  crowdsec-db:
+
+networks:
+  crowdsec:
+    driver: bridge

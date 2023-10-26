@@ -8,5 +8,6 @@ The idea is to show how to use CrowdSec in different scenarios, from the most ba
 | [Container Socket](/container-socket/) | Example reading logs from container socket |
 | [Journald](/journald/) | Example reading logs from journald |
 | [Swag](/swag/) | Example protecting SWAG |
+| [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager) |
 
 ### Would you like to contribute an example you didn't see here? or just found a mistake you would like to fix? Please open a PR and we will review it as soon as possible.
