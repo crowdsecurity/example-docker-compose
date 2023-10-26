@@ -4,6 +4,9 @@ services:
   app:
     image: 'Lepresidente/nginxproxymanager:latest'
     restart: unless-stopped
+    networks:
+      crowdsec:
+      npm:
     ports:
       # These ports are in format :
       - '80:80' # Public HTTP Port
@@ -23,10 +26,14 @@ services:
       - ./letsencrypt:/etc/letsencrypt
     depends_on:
       - db
+    security_opt:
+      - no-new-privileges=true
 
   db:
     image: 'jc21/mariadb-aria:latest'
     restart: unless-stopped
+    networks:
+      npm:
     environment:
       MYSQL_ROOT_PASSWORD: 'npm'
       MYSQL_DATABASE: 'npm'
@@ -34,6 +41,8 @@ services:
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql
+    security_opt:
+      - no-new-privileges=true
 
   crowdsec:
     image: docker.io/crowdsecurity/crowdsec:latest
@@ -54,4 +63,6 @@ volumes:
 
 networks:
   crowdsec:
+    driver: bridge
+  npm:
     driver: bridge
