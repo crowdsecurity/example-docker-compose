@@ -1,6 +1,6 @@
 ## Description
 
-This example shows you a [NPM](https://docs.linuxserver.io/general/swag) example.
+This example shows you a [NPM](https://nginxproxymanager.com/) example using LePresidente FORK.
 
 This example contains multiple containers :
 * crowdsec : Read NPM logs from the mounted volumes
