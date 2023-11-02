@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  app:
+    image: traefik/whoami
+    restart: always
+    networks:
+      crowdsec:
+  swag:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: swag
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=example.uk
+      - SUBDOMAINS=wildcard
+      - VALIDATION=dns
+      - DNSPLUGIN=cloudflare
+      - EMAIL=swag@example.uk
+      - DOCKER_MODS=ghcr.io/linuxserver/mods:swag-crowdsec
+      - CROWDSEC_API_KEY=${CROWDSEC_API_KEY}
+      - CROWDSEC_LAPI_URL=http://crowdsec:8080
+    networks:
+      crowdsec:
+    volumes:
+      - /opt/appdata/swag:/config
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+  crowdsec:
+    image: docker.io/crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      - GID=1000
+      - BOUNCER_KEY_SWAG=${CROWDSEC_API_KEY}
+      - COLLECTIONS=crowdsecurity/nginx crowdsecurity/http-cve crowdsecurity/whitelist-good-actors
+    volumes:
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - /opt/appdata/swag/log/nginx:/var/log/swag:ro
+    networks:
+      crowdsec:
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+
+volumes:
+  crowdsec-db:
+
+networks:
+  crowdsec:
+    driver: bridge

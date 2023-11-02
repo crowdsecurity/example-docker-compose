@@ -1,17 +1,13 @@
-# Docker Compose
+In this repository we will be showing multiple examples on how to use CrowdSec within container environments.
 
-This example explains how to integrate Crowdsec in environment deployed with docker-compose. It set up multiple containers :
+The idea is to show how to use CrowdSec in different scenarios, from the most basic to more complex ones. These examples can be used out of the box or as a base to build your own solution.
 
-![Schema](schema.png)
+| Name  | Description  |
+| ------------- | ------------- |
+| [Standard](/basic/)  | Old example please read top of README.md |
+| [Container Socket](/container-socket/) | Example reading logs from container socket |
+| [Journald](/journald/) | Example reading logs from journald |
+| [Swag](/swag/) | Example protecting SWAG |
+| [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager) |
 
-This example contains multiple containers :
-* app : apache server serving index.html containing an `hello world`
-* reverse-proxy : nginx that serving this app from the host
-* crowdsec : it will read reverse-proxy logs from the shared volume
-* dashboard : we use [metabase](https://hub.docker.com/r/metabase/metabase) to display crowdsec database data.
-
-We have chosen the simplest way to collect logs (by sharing volumes between containers), if you are in production, you are probably using [logging-driver](https://docs.docker.com/config/containers/logging/configure/) to centralize logs with rsyslog or another driver, so don't forget to adapt the crowdsec docker-compose configuration to read your logs properly.
-
-**Prerequisites:** [Docker](https://docs.docker.com/engine/install/) / [Docker Compose](https://docs.docker.com/compose/install/)
-
-ps: default's credentials for metabase are `crowdsec@crowdsec.net` and `!!Cr0wdS3c_M3t4b4s3??`
+### Would you like to contribute an example you didn't see here? or just found a mistake you would like to fix? Please open a PR and we will review it as soon as possible.
