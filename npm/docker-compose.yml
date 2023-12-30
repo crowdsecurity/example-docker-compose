@@ -51,6 +51,7 @@ services:
       - COLLECTIONS=crowdsecurity/nginx-proxy-manager
     volumes:
       - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
       - ./data/logs/:/var/log/npm:ro
     networks:
@@ -61,6 +62,7 @@ services:
 
 volumes:
   crowdsec-db:
+  crowdsec-config:
 
 networks:
   crowdsec:
