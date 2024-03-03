@@ -18,24 +18,28 @@ services:
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       DB_MYSQL_NAME: "npm"
+      CROWDSEC_OPENRESTY_BOUNCER: |
+        ENABLED=true
+        API_URL=http://crowdsec:8080
+        API_KEY=${CROWDSEC_BOUNCER_APIKEY}
       # Uncomment this if IPv6 is not enabled on your host
       # DISABLE_IPV6: 'true'
     volumes:
       - ./data:/data
-      - ./crowdsec-openresty-bouncer.conf:/data/crowdsec/crowdsec-openresty-bouncer.conf
       - ./letsencrypt:/etc/letsencrypt
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     security_opt:
       - no-new-privileges=true
 
   db:
-    image: 'jc21/mariadb-aria:latest'
+    image: 'mariadb:lts'
     restart: unless-stopped
     networks:
       npm:
     environment:
-      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_ROOT_PASSWORD: ${ROOT_DATABASE_PASSWORD}
       MYSQL_DATABASE: 'npm'
       MYSQL_USER: 'npm'
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
@@ -43,6 +47,12 @@ services:
       - ./data/mysql:/var/lib/mysql
     security_opt:
       - no-new-privileges=true
+    healthcheck:
+      test: ['CMD', '/usr/local/bin/healthcheck.sh', '--innodb_initialized']
+      start_period: 5s
+      timeout: 5s
+      interval: 5s
+      retries: 5
 
   crowdsec:
     image: docker.io/crowdsecurity/crowdsec:latest
