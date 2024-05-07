@@ -6,8 +6,7 @@ This example shows you a [Caddy](https://caddyserver.com/) example.
 
 This example contains multiple containers :
 * crowdsec : Read Caddy logs from the mounted volumes
-* caddy : The Caddy container
-* whoami : A simple container to test the setup
+* caddy : The Caddy container built using `xcaddy`
 
 Before running the example, you need to create a api within the `.env` file. You can do this by running the following command :
 
