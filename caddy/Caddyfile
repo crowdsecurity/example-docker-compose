@@ -1,0 +1,21 @@
+{
+    debug
+    crowdsec {
+        api_url http://crowdsec:8080
+        api_key {$CROWDSEC_API_KEY}
+    }
+    ## SHOULDNT BE USED IN PRODUCTION
+    auto_https off
+    #################################
+}
+
+# Basic http server for testing
+http://localhost {
+    route {
+        crowdsec #CrowdSec Middleware
+        respond "Allowed by CrowdSec!"
+    }
+    log {
+        output file /var/log/caddy/access.log
+    }
+}
