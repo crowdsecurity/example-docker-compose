@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  caddy:
+    build:
+      context: ./
+      target: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CROWDSEC_API_KEY=${CROWDSEC_API_KEY}
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+      - caddy-logs:/var/log/caddy
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      crowdsec:
+    security_opt:
+      - no-new-privileges=true
+
+  crowdsec:
+    image: docker.io/crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      - GID=1000
+      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/http-cve crowdsecurity/whitelist-good-actors
+      - BOUNCER_KEY_CADDY=${CROWDSEC_API_KEY}
+    volumes:
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - caddy-logs:/var/log/caddy:ro
+    networks:
+      crowdsec:
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges=true
+
+volumes:
+  crowdsec-db:
+  caddy-logs:
+  caddy-data:
+  caddy-config:
+
+networks:
+  crowdsec:
+    driver: bridge

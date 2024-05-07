@@ -9,5 +9,6 @@ The idea is to show how to use CrowdSec in different scenarios, from the most ba
 | [Journald](/journald/) | Example reading logs from journald |
 | [Swag](/swag/) | Example protecting SWAG |
 | [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager) |
+| [Caddy](/caddy/) | Example protecting Caddy |
 
 ### Would you like to contribute an example you didn't see here? or just found a mistake you would like to fix? Please open a PR and we will review it as soon as possible.
