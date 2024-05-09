@@ -44,7 +44,7 @@ services:
       MYSQL_USER: 'npm'
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
     security_opt:
       - no-new-privileges=true
     healthcheck:
@@ -73,6 +73,7 @@ services:
 volumes:
   crowdsec-db:
   crowdsec-config:
+  mariadb-data:
 
 networks:
   crowdsec:
