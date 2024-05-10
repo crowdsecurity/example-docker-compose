@@ -27,7 +27,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     environment:
-      ## DOCKER_HOST: tcp://socket-proxy:2375
+      ## DOCKER_HOST: tcp://socket-proxy:80
       COLLECTIONS: "crowdsecurity/nginx"
     depends_on:
       - 'reverse-proxy'
@@ -49,6 +49,7 @@ services:
   #   environment:
   #     INFO: 1
   #     CONTAINERS: 1
+  #     POST: 0
   #     BUILD: 0
   #     COMMIT: 0
   #     CONFIGS: 0
@@ -67,6 +68,9 @@ services:
   #     VOLUMES: 0
   #   volumes:
   #     - '/var/run/docker.sock:/var/run/docker.sock:ro'
+  #   read_only: true
+  #   tmpfs:
+  #     - /run
 # #
 
 volumes:
