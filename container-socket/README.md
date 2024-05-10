@@ -8,9 +8,11 @@ This example contains multiple containers :
 * crowdsec : it will read reverse-proxy logs from the socket
 
 **Optional**
-* socket-proxy: HAProxy that will expose container socket over TCP instead of mounting the socket directly into CrowdSec container
+* socket-proxy: Nginx container that will expose container socket over TCP instead of mounting the socket directly into CrowdSec container
 
 Even though this is classed as optional it is **highly** advised since it is not best practice to mount the docker socket directly into a container.
+
+Attribution to [linux server](https://www.linuxserver.io/) team for the docker-socket-proxy container.
 
 **Prerequisites:** [Docker](https://docs.docker.com/engine/install/) / [Docker Compose](https://docs.docker.com/compose/install/)
 

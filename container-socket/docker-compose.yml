@@ -44,11 +44,12 @@ services:
   #   networks:
   #     crowdsec:
   #   restart: always
-  #   image: tecnativa/docker-socket-proxy
+  #   image: lscr.io/linuxserver/socket-proxy:latest
   #   container_name: socket-proxy
   #   environment:
   #     INFO: 1
   #     CONTAINERS: 1
+  #     POST: 0
   #     BUILD: 0
   #     COMMIT: 0
   #     CONFIGS: 0
@@ -66,7 +67,10 @@ services:
   #     TASKS: 0
   #     VOLUMES: 0
   #   volumes:
-  #     - '/var/run/docker.sock:/var/run/docker.sock'
+  #     - '/var/run/docker.sock:/var/run/docker.sock:ro'
+  #   read_only: true
+  #   tmpfs:
+  #     - /run
 # #
 
 volumes:
