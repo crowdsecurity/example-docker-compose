@@ -64,7 +64,7 @@ However, this was already achievable via the `regex_name` configuration within t
 For example:
 
 ```
-docker run -d -l crowdsec.enable=true -l crowdsec.labels.type=reverse-proxy nginx:alpine
+docker run -d -l crowdsec.enable=true -l crowdsec.labels.type=nginx nginx:alpine
 ```
 
 Now you can see the discovery of the new container:
