@@ -1,0 +1,2 @@
+source: docker
+use_container_labels: true
