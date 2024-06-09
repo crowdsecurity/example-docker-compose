@@ -9,7 +9,7 @@ services:
     image: nginx:alpine
     restart: always
     ports:
-      - 8000:80
+      - 8000-8005:80
     depends_on:
       - 'app'
     volumes:
@@ -19,6 +19,7 @@ services:
     labels:
       - crowdsec.enable=true
       - crowdsec.labels.type=nginx
+    ## https://docs.crowdsec.net/docs/next/data_sources/docker#use_container_labels
   
   crowdsec:
     image: crowdsecurity/crowdsec:v1.6.2 ## container labels were introduced in 1.6.2
@@ -30,12 +31,12 @@ services:
       COLLECTIONS: "crowdsecurity/nginx"
     depends_on:
       - 'reverse-proxy'
+      - 'socket-proxy'
     volumes:
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
       - crowdsec-db:/var/lib/crowdsec/data/
       - crowdsec-config:/etc/crowdsec/
 
-# #Uncomment to use socket proxy
   socket-proxy:
     networks:
       crowdsec:
@@ -67,7 +68,6 @@ services:
     read_only: true
     tmpfs:
       - /run
-# #
 
 volumes:
   crowdsec-db:
