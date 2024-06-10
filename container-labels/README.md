@@ -25,52 +25,41 @@ CrowdSec container will request from the socket-proxy the running container info
 To test the discovery with labels, you can run the following command:
 
 ```bash
-docker-compose up -d
+docker compose -f docker-compose-crowdsec.yml up  -d
 ```
 
 This will start the following containers:
-* app
-* reverse-proxy
 * crowdsec
 * socket-proxy
 
 You can check the logs of the crowdsec container to see the logs being processed:
 
 ```bash
-docker-compose logs -f crowdsec
+docker compose logs -f crowdsec
 ```
 
-You should see the discovery of the first reverse proxy container:
+You should see the docker source manager has been started
 
 ```
-crowdsec-1  | time="2024-06-09T14:12:48Z" level=info msg="start tail for container /container-labels-reverse-proxy-1" container_name=/container-labels-reverse-proxy-1 type=docker
+crowdsec-1    | time="2024-06-10T07:49:46Z" level=info msg="Starting docker acquisition" type=docker
+crowdsec-1    | time="2024-06-10T07:49:46Z" level=info msg="Container watcher started, interval: 10s" type=docker
+crowdsec-1    | time="2024-06-10T07:49:46Z" level=info msg="DockerSource Manager started" type=docker
 ```
 
-You can then use the scale mechanism to add more reverse proxy containers:
+You can then bring up the app and reverse-proxy containers:
 
 ```bash
-docker compose scale reverse-proxy=3
+docker compose -f docker-compose-app.yml up -d
 ```
 
-You should see the discovery of the new reverse proxy containers:
+This will start the following containers:
+* app
+* reverse-proxy
+
+You should see the discovery of the reverse proxy containers:
 
 ```
-crowdsec-1  | time="2024-06-09T14:12:48Z" level=info msg="start tail for container /container-labels-reverse-proxy-2" container_name=/container-labels-reverse-proxy-2 type=docker
-crowdsec-1  | time="2024-06-09T14:12:48Z" level=info msg="start tail for container /container-labels-reverse-proxy-3" container_name=/container-labels-reverse-proxy-3 type=docker
-```
-
-However, this was already achievable via the `regex_name` configuration within the acquisition. The real power of this setup is when you have multiple compose files or containers running on the same host. 
-
-For example:
-
-```
-docker run -d -l crowdsec.enable=true -l crowdsec.labels.type=nginx nginx:alpine
-```
-
-Now you can see the discovery of the new container:
-
-```
-crowdsec-1  | time="2024-06-09T14:21:38Z" level=info msg="start tail for container /modest_zhukovsky" container_name=/modest_zhukovsky type=docker
+crowdsec-1    | time="2024-06-10T07:50:46Z" level=info msg="start tail for container /container-labels-reverse-proxy-1" container_name=/container-labels-reverse-proxy-1 type=docker
 ```
 
 This means the CrowdSec container configuration did not need to be altered to discover the new container since the labels were set on creation. This works for all applications that are containerized and can be used to protect them without having to alter the CrowdSec configuration.
