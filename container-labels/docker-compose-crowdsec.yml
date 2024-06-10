@@ -1,26 +1,4 @@
 services:
-  app:
-    image: traefik/whoami
-    restart: always
-    networks:
-      crowdsec:
-    
-  reverse-proxy:
-    image: nginx:alpine
-    restart: always
-    ports:
-      - 8000-8005:80
-    depends_on:
-      - 'app'
-    volumes:
-      - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      crowdsec:
-    labels:
-      - crowdsec.enable=true
-      - crowdsec.labels.type=nginx
-    ## https://docs.crowdsec.net/docs/next/data_sources/docker#use_container_labels
-  
   crowdsec:
     image: crowdsecurity/crowdsec:v1.6.2 ## container labels were introduced in 1.6.2
     restart: always
@@ -32,7 +10,6 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
-      - 'reverse-proxy'
       - 'socket-proxy'
     volumes:
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
