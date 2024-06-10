@@ -6,6 +6,7 @@ The idea is to show how to use CrowdSec in different scenarios, from the most ba
 | ------------- | ------------- |
 | [Standard](/basic/)  | Old example please read top of README.md |
 | [Container Socket](/container-socket/) | Example reading logs from container socket |
+| [Container Labels](/container-labels/) | Example reading logs from containers using labels as discovery |
 | [Journald](/journald/) | Example reading logs from journald |
 | [Swag](/swag/) | Example protecting SWAG |
 | [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager) |
