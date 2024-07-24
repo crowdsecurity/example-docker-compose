@@ -1,0 +1,57 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:v1.6.2 ## container labels were introduced in 1.6.2
+    restart: always
+    networks:
+      crowdsec:
+    environment:
+      DOCKER_HOST: tcp://socket-proxy:2375
+      COLLECTIONS: "crowdsecurity/nginx"
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - 'socket-proxy'
+    volumes:
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+
+  socket-proxy:
+    networks:
+      crowdsec:
+    restart: always
+    image: lscr.io/linuxserver/socket-proxy:latest
+    container_name: socket-proxy
+    environment:
+      INFO: 1
+      CONTAINERS: 1
+      POST: 0
+      BUILD: 0
+      COMMIT: 0
+      CONFIGS: 0
+      DISTRIBUTION: 0
+      EXEC: 0
+      GRPC: 0
+      IMAGES: 0
+      NETWORKS: 0
+      NODES: 0
+      PLUGINS: 0
+      SERVICES: 0
+      SESSION: 0
+      SWARM: 0
+      SYSTEM: 0
+      TASKS: 0
+      VOLUMES: 0
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    read_only: true
+    tmpfs:
+      - /run
+
+volumes:
+  crowdsec-db:
+  crowdsec-config:
+
+networks:
+  crowdsec:
+    driver: bridge
