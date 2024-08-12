@@ -40,6 +40,9 @@ services:
       GID: "${GID-1000}"
     depends_on:
       - 'reverse-proxy'
+    ports:
+      - '127.0.0.1:8080:8080' ## We expose the LAPI 8080 via loopback for bouncers to connect
+    ## Change to '8080:8080' if you want to expose the LAPI to external hosts, HOWEVER, do so at your own risk.
     volumes:
       - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
       - logs:/var/log/nginx
