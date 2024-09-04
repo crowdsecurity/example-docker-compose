@@ -1,0 +1,11 @@
+filenames:
+ - /var/log/nginx/example.*.log
+labels:
+  type: nginx
+---
+listen_addr: :7422
+appsec_config: crowdsecurity/appsec-default
+name: openrestyAppSec
+source: appsec
+labels:
+  type: appsec
