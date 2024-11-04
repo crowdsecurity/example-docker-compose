@@ -22,6 +22,9 @@ echo "CROWDSEC_BOUNCER_APIKEY=<key shown from above output>" >> .env
 docker compose down
 ```
 
+By default, NPM does not report the original client's IP, but rather the CDN or other proxy IP in between the client and your server. If you run Crowdsec, it will ban this middle-man IP rather than the source IP. 
+In order to ban the source IP, use the file in `/data/nginx/custom/server_proxy.conf`. [View here for more information](https://nginxproxymanager.com/advanced-config/#custom-nginx-configurations). This will set `real_ip_header X-Forwarded-For` to all proxy hosts globally. 
+
 Then you can start the containers as normal 
 
 ```bash
