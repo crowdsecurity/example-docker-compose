@@ -64,7 +64,7 @@ services:
       - "127.0.0.1:7422:7422"
       - "127.0.0.1:8080:8080"
     environment:
-      - "TZ=Europe/Berlin"
+      - "TZ=your-timezone"
       - "COLLECTIONS=ZoeyVid/npmplus"
     volumes:
       - "/opt/crowdsec/conf:/etc/crowdsec"
@@ -82,7 +82,7 @@ services:
 #    ports:
 #      - "80:80"
 #    environment:
-#      - "TZ=Europe/Berlin"
+#      - "TZ=your-timezone"
 
 
 # This can be used with GOA=true, to have geoip data
@@ -92,7 +92,7 @@ services:
 #    restart: always
 #    network_mode: bridge
 #    environment:
-#      - "TZ=Europe/Berlin"
+#      - "TZ=your-timezone"
 #      - "GEOIPUPDATE_EDITION_IDS=GeoLite2-Country GeoLite2-City GeoLite2-ASN"
 #      - "GEOIPUPDATE_ACCOUNT_ID=<your-account-id>"
 #      - "GEOIPUPDATE_LICENSE_KEY=<your-license-key>"
