@@ -9,7 +9,8 @@ The idea is to show how to use CrowdSec in different scenarios, from the most ba
 | [Container Labels](/container-labels/) | Example reading logs from containers using labels as discovery |
 | [Journald](/journald/) | Example reading logs from journald |
 | [Swag](/swag/) | Example protecting SWAG |
-| [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager) |
+| [NPM](/npm/) | Example protecting NPM (Nginx Proxy Manager Fork) |
+| [NPMplus](/NPMplus/) | Example protecting NPMplus (Nginx Proxy Manager Fork) |
 | [Caddy](/caddy/) | Example protecting Caddy |
 | [ELK](/elk/) | Example reading logs from ELK stack (Logstash) |
 
