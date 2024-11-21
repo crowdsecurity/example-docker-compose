@@ -1,0 +1,23 @@
+filenames:
+  - /opt/npm/nginx/access.log
+labels:
+  type: npmplus
+---
+source: docker
+container_name:
+ - npmplus
+labels:
+  type: npmplus
+---
+source: docker
+container_name:
+ - npmplus
+labels:
+  type: modsecurity
+---
+listen_addr: 0.0.0.0:7422
+appsec_config: crowdsecurity/appsec-default
+name: appsec
+source: appsec
+labels:
+  type: appsec
