@@ -14,6 +14,8 @@ services:
 #      - "ACME_SERVER=https://acme.zerossl.com/v2/DV90" # acme server to use for NEW certificates, default is (currently, may change later) set to: https://acme-v02.api.letsencrypt.org/directory (letsencrypt)
 #      - "ACME_EAB_KID=123456789abcdef" # Key Identifier for External Account Binding for the acme server
 #      - "ACME_EAB_HMAC_KEY=123456789abcdef" # HMAC key for External Account Binding for the acme server
+#      - "ACME_MUST_STAPLE=false" # enables must-staple, default true, please only disable it if you get this error MOZILLA_PKIX_ERROR_REQUIRED_TLS_FEATURE_MISSING in Firefox, see https://github.com/ZoeyVid/NPMplus/discussions/1249, after changing this option you need to recreate (not renew) your certs
+#      - "ACME_SERVER_TLS_VERIFY=false" # enables checking if ACME_SERVER has a valid TLS cert, default true
 #      - "PUID=1000" # set group id, default 0 (root)
 #      - "PGID=1000" # set user id, default 0 (root), requires PUID
 #      - "NIBEP=48694" # internal port of the NPMplus API, always bound to 127.0.0.1, default 48693, you need to change it, if you want to run multiple npm instances in network mode host
