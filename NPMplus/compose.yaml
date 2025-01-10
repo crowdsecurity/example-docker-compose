@@ -78,8 +78,8 @@ services:
       - "COLLECTIONS=ZoeyVid/npmplus"
     volumes:
       - "/opt/crowdsec/conf:/etc/crowdsec"
-      - "./crowdsec/npmplus.yaml:/etc/crowdsec/acquis.d/npmplus.yaml:ro"
       - "/opt/crowdsec/data:/var/lib/crowdsec/data"
+      - "./crowdsec/npmplus.yaml:/etc/crowdsec/acquis.d/npmplus.yaml:ro"
       - "/opt/npm/nginx:/opt/npm/nginx:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
