@@ -65,6 +65,24 @@ services:
 #      - "INITIAL_ADMIN_PASSWORD=initial-password" # password to use instead of iArhP1j7p1P6TA92FA2FMbbUGYqwcYzxC4AVEe12Wbi94FY9gNN62aKyF1shrvG4NycjjX9KfmDQiwkLZH1ZDR9xMjiG2QmoHXi on first start of NPMplus for the initial user
 #      - "INITIAL_DEFAULT_PAGE=444" # default page to set on first start of NPMplus for the initial user, default congratulations, can be one of: 404, 444, redirect, congratulations or html
 
+  crowdsec:
+    container_name: crowdsec
+    image: crowdsecurity/crowdsec
+    restart: always
+    network_mode: bridge
+    ports:
+      - "127.0.0.1:7422:7422"
+      - "127.0.0.1:8080:8080"
+    environment:
+      - "TZ=your-timezone" # needs to be changed
+      - "COLLECTIONS=ZoeyVid/npmplus"
+    volumes:
+      - "/opt/crowdsec/conf:/etc/crowdsec"
+      - "./crowdsec/npmplus.yaml:/etc/crowdsec/acquis.d/npmplus.yaml:ro"
+      - "/opt/crowdsec/data:/var/lib/crowdsec/data"
+      - "/opt/npm/nginx:/opt/npm/nginx:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
 # This can be used with DISABLE_HTTP=true, to force HTTPS redirects for every host
 #  npmplus-caddy:
 #    container_name: npmplus-caddy
@@ -90,21 +108,3 @@ services:
 #      - "GEOIPUPDATE_FREQUENCY=24"
 #    volumes:
 #      - "/opt/npm/goaccess/geoip:/usr/share/GeoIP"
-
-# This can be used to enable crowdsec, see README for a guide
-#  crowdsec:
-#    container_name: crowdsec
-#    image: crowdsecurity/crowdsec
-#    restart: always
-#    network_mode: bridge
-#    ports:
-#      - "127.0.0.1:7422:7422"
-#      - "127.0.0.1:8080:8080"
-#    environment:
-#      - "TZ=your-timezone" # needs to be changed
-#      - "COLLECTIONS=ZoeyVid/npmplus"
-#    volumes:
-#      - "/opt/crowdsec/conf:/etc/crowdsec"
-#      - "/opt/crowdsec/data:/var/lib/crowdsec/data"
-#      - "/opt/npm/nginx:/opt/npm/nginx:ro"
-#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
