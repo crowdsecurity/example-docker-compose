@@ -3,7 +3,7 @@ services:
     image: crowdsecurity/crowdsec:v1.6.2 ## container labels were introduced in 1.6.2
     restart: always
     networks:
-      crowdsec:
+      - crowdsec
     environment:
       DOCKER_HOST: tcp://socket-proxy:2375
       COLLECTIONS: "crowdsecurity/nginx"
@@ -18,7 +18,7 @@ services:
 
   socket-proxy:
     networks:
-      crowdsec:
+      - crowdsec
     restart: always
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: socket-proxy
@@ -54,4 +54,3 @@ volumes:
 
 networks:
   crowdsec:
-    driver: bridge
