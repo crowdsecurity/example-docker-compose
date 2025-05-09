@@ -47,25 +47,34 @@ services:
   #   image: lscr.io/linuxserver/socket-proxy:latest
   #   container_name: socket-proxy
   #   environment:
-  #     INFO: 1
-  #     CONTAINERS: 1
-  #     POST: 0
-  #     BUILD: 0
-  #     COMMIT: 0
-  #     CONFIGS: 0
-  #     DISTRIBUTION: 0
-  #     EXEC: 0
-  #     GRPC: 0
-  #     IMAGES: 0
-  #     NETWORKS: 0
-  #     NODES: 0
-  #     PLUGINS: 0
-  #     SERVICES: 0
-  #     SESSION: 0
-  #     SWARM: 0
-  #     SYSTEM: 0
-  #     TASKS: 0
-  #     VOLUMES: 0
+  #     - ALLOW_START=0 #optional
+  #     - ALLOW_STOP=0 #optional
+  #     - ALLOW_RESTARTS=0 #optional
+  #     - AUTH=0 #optional
+  #     - BUILD=0 #optional
+  #     - COMMIT=0 #optional
+  #     - CONFIGS=0 #optional
+  #     - CONTAINERS=1 #optional
+  #     - DISABLE_IPV6=0 #optional
+  #     - DISTRIBUTION=0 #optional
+  #     - EVENTS=1 #optional
+  #     - EXEC=0 #optional
+  #     - IMAGES=0 #optional
+  #     - INFO=1 #optional
+  #     - LOG_LEVEL=info #optional
+  #     - NETWORKS=0 #optional
+  #     - NODES=0 #optional
+  #     - PING=1 #optional
+  #     - PLUGINS=0 #optional
+  #     - POST=0 #optional
+  #     - SECRETS=0 #optional
+  #     - SERVICES=0 #optional
+  #     - SESSION=0 #optional
+  #     - SWARM=0 #optional
+  #     - SYSTEM=0 #optional
+  #     - TASKS=0 #optional
+  #     - VERSION=1 #optional
+  #     - VOLUMES=0 #optional
   #   volumes:
   #     - '/var/run/docker.sock:/var/run/docker.sock:ro'
   #   read_only: true
