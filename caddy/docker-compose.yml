@@ -29,7 +29,7 @@ services:
       - BOUNCER_KEY_CADDY=${CROWDSEC_API_KEY}
     volumes:
       - crowdsec-db:/var/lib/crowdsec/data/
-      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - ./crowdsec:/etc/crowdsec
       - caddy-logs:/var/log/caddy:ro
     networks:
       crowdsec:
