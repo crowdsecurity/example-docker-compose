@@ -1,0 +1,84 @@
+name: crowdsec
+
+services:
+  #the application itself : static html served by apache2.
+  #the html can be found in ./app/
+  app:
+    image: httpd:alpine
+    restart: unless-stopped
+    volumes:
+      - ./app/:/usr/local/apache2/htdocs/
+
+  openresty:
+    image: ghcr.io/stevusprimus/cs-openresty-bouncer:buildx-latest
+    restart: unless-stopped
+    ports:
+      - 3080:80
+      - 3443:443
+    depends_on:
+      - 'app'
+    volumes:
+      - ./openresty/conf.d:/etc/nginx/conf.d
+      - ./logs:/var/log/nginx
+    environment:
+      BOUNCER_CONFIG: |
+        APPSEC_URL=http://crowdsec:7422
+
+        APPSEC_FAILURE_ACTION=deny
+        ALWAYS_SEND_TO_APPSEC=true
+        SSL_VERIFY=false
+        MODE=stream
+
+        FALLBACK_REMEDIATION=ban
+        BOUNCING_ON_TYPE=all
+
+        BAN_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/ban.html
+        
+        API_KEY=${CROWDSEC_BOUNCER_OPENRESTY_APIKEY}
+        API_URL=http://crowdsec:8080
+
+        CAPTCHA_PROVIDER=${CROWDSEC_BOUNCER_OPENRESTY_CAPTCHA_PROVIDER}
+        SECRET_KEY=${CROWDSEC_BOUNCER_OPENRESTY_SECRET_KEY}
+        SITE_KEY=${CROWDSEC_BOUNCER_OPENRESTY_SITE_KEY}
+        CAPTCHA_TEMPLATE_PATH=/var/lib/crowdsec/lua/templates/captcha.html
+        
+  crowdsec:
+    image: crowdsecurity/crowdsec
+    restart: unless-stopped
+    environment:
+      #this is the list of collections we want to install
+      #https://hub.crowdsec.net/author/crowdsecurity/collections/nginx
+      COLLECTIONS: "crowdsecurity/nginx crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules"
+      GID: "${GID-1000}"
+      TZ: "Europe/Berlin"
+      BOUNCER_KEY_openresty: ${CROWDSEC_BOUNCER_OPENRESTY_APIKEY}
+    depends_on:
+      - openresty
+    #ports:
+    #  - 3001:8080 ## We expose the LAPI 8080 via loopback for bouncers to connect
+    ## Change to '8080:8080' if you want to expose the LAPI to external hosts, HOWEVER, do so at your own risk.
+    volumes:
+      - ./crowdsec/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - ./logs:/var/log/nginx
+      - crowdsec-db:/var/lib/crowdsec/data/
+      - crowdsec-config:/etc/crowdsec/
+  
+  #metabase, because security is cool, but dashboards are cooler
+  # dashboard:
+  #   #we're using a custom Dockerfile so that metabase pops with pre-configured dashboards
+  #   build: ./crowdsec/dashboard
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     MB_DB_FILE: /data/metabase.db
+  #     MGID: "${GID-1000}"
+  #   depends_on:
+  #     - 'crowdsec'
+  #   volumes:
+  #     - crowdsec-db:/metabase-data/
+
+volumes:
+  logs:
+  crowdsec-db:
+  crowdsec-config:
