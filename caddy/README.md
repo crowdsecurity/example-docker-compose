@@ -8,7 +8,7 @@ This example contains multiple containers :
 * crowdsec : Read Caddy logs from the mounted volumes
 * caddy : The Caddy container built using `xcaddy`
 
-Before running the example, you need to create a api within the `.env` file. You can do this by running the following command :
+Before running the example, you need to create an api within the `.env` file. You can do this by running the following command :
 
 ```bash
 echo "CROWDSEC_API_KEY=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)" > .env
