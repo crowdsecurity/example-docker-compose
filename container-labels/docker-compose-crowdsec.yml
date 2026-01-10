@@ -23,6 +23,13 @@ services:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: socket-proxy
     environment:
+      - CONTAINERS=1 #required
+      - EVENTS=1 #required
+      - INFO=1 #required
+      - PING=1 #required
+      - VERSION=1 #required
+      # all other environment variables listed for completeness
+      # see https://github.com/Tecnativa/docker-socket-proxy/ for details
       - ALLOW_START=0 #optional
       - ALLOW_STOP=0 #optional
       - ALLOW_RESTARTS=0 #optional
@@ -30,17 +37,13 @@ services:
       - BUILD=0 #optional
       - COMMIT=0 #optional
       - CONFIGS=0 #optional
-      - CONTAINERS=1 #optional
       - DISABLE_IPV6=0 #optional
       - DISTRIBUTION=0 #optional
-      - EVENTS=1 #optional
       - EXEC=0 #optional
       - IMAGES=0 #optional
-      - INFO=1 #optional
       - LOG_LEVEL=info #optional
       - NETWORKS=0 #optional
       - NODES=0 #optional
-      - PING=1 #optional
       - PLUGINS=0 #optional
       - POST=0 #optional
       - SECRETS=0 #optional
@@ -49,7 +52,6 @@ services:
       - SWARM=0 #optional
       - SYSTEM=0 #optional
       - TASKS=0 #optional
-      - VERSION=1 #optional
       - VOLUMES=0 #optional
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
